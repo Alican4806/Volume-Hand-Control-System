@@ -72,24 +72,37 @@ while True:
             cv.line(img,(lmList[4][1],lmList[4][2]),(lmList[8][1],lmList[8][2]),color,4)
             cv.circle(img,(x,y),1,(color2),20)
             
+            # I tried to optimize the range as decimal
             
-            
-            
-            
+            decimalValueMin = (10**((minVol)/20))
+            decimalValueMax = (10**((maxVol)/20))
+            # print(decimalValueMax,decimalValueMin)
             
             # max dis = 200  min dis = 25
-            vol = np.interp(dis,[25,200],[minVol,maxVol])  # The ranges is equalled by this function
+           # vol = np.interp(dis,[25,200],[minVol,maxVol])  # The ranges is equalled by this function
             # print(vol)
+            vol = np.interp(dis,[25,200],[decimalValueMin,decimalValueMax])
             
-            # print(vol) 
-            vol1 = np.interp(dis,[minVol,maxVol],[300,100])   
-            # print(vol1)      
-            volume.SetMasterVolumeLevel(vol,None) # The volume level is adjusted by this function
+            print(vol)
+            vol2 = 20*(math.log10(vol))
             
+
+            
+            print(vol2)
+            vol1 = np.interp(dis,[25,200],[0,100]) 
+            vol11 = int(vol1)
+            print(vol11)        
+            cv.putText(img,f'%{str(vol11)}',(40,350),1,cv.FONT_HERSHEY_COMPLEX,(0,255,255),3)
+                    
+                # print(vol) 
+            vol12 = np.interp(dis,[25,200],[300,100])   
+              # print(vol1)      
+            volume.SetMasterVolumeLevel(vol2,None) # The volume level is adjusted by this function     
+                
             
             
             cv.rectangle(img,(50,100),(100,300),color2,4)
-            cv.rectangle(img,(100,300),(50,int(vol1)),color2,cv.FILLED)
+            cv.rectangle(img,(100,300),(50,int(vol12)),color2,cv.FILLED)
         cv.imshow('img',img)
         
         if cv.waitKey(20) & 0xFF ==ord('a'):
